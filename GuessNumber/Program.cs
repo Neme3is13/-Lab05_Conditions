@@ -108,30 +108,83 @@
 //         break;
 // }
 
-Console.Write("Введите название месяца (1-12) ");
-int mec = int.Parse(Console.ReadLine());
-switch (mec) {
-    case 12:
-    case 1:
-    case 2:
-        System.Console.WriteLine("зима");
-        break;
-    case 3:
-    case 4:
-    case 5:
-        System.Console.WriteLine("весна");
-        break;
-    case 6:
-    case 7:
-    case 8:
-        System.Console.WriteLine("лето");
-        break;
-    case 9:
-    case 10:
-    case 11:
-        System.Console.WriteLine("ОСЕНЬ");
-        break;
-    default:
-        System.Console.WriteLine("такого месяца нет");
-        break;
+// Console.Write("Введите название месяца (1-12) ");
+// int mec = int.Parse(Console.ReadLine());
+// switch (mec) {
+//     case 12:
+//     case 1:
+//     case 2:
+//         System.Console.WriteLine("зима");
+//         break;
+//     case 3:
+//     case 4:
+//     case 5:
+//         System.Console.WriteLine("весна");
+//         break;
+//     case 6:
+//     case 7:
+//     case 8:
+//         System.Console.WriteLine("лето");
+//         break;
+//     case 9:
+//     case 10:
+//     case 11:
+//         System.Console.WriteLine("ОСЕНЬ");
+//         break;
+//     default:
+//         System.Console.WriteLine("такого месяца нет");
+//         break;
+// }
+
+
+Random random = new Random();
+int secret = random.Next(1, 101);
+int attempts = 0;
+bool guessed = false;
+System.Console.WriteLine("угадай число (1-100) ");
+System.Console.WriteLine("я загад число попробуй угадать! ");
+string result = attempts <= 7
+    ? $"отличный результат! всего {attempts} попыток"
+    : $"число найдено за {attempts} попыток";
+System.Console.WriteLine($"правильно! загаданное число: {secret}");  
+System.Console.WriteLine($"{result}");
+
+string GetHint( int difference) {
+    switch (difference) {
+        case <= 3:
+            return "горячо";
+        case <= 10:
+            return "тепло";
+        case <= 25:
+            return "прохладно";
+        default:
+            return "холодно";
+    }
+}
+while (!guessed) {
+    Console.Write($"попытка {attempts + 1} твой вариант: ");
+    string input = Console.ReadLine();
+    if (!int.TryParse(input, out int guess)) {
+    System.Console.WriteLine("!!! введите  целое число");   
+    continue;  
+    }
+    if (guess < 1 || guess > 100) {
+        System.Console.WriteLine("!!! число должно быть от 1 - 100");
+        continue;
+    }
+    attempts++;
+    if (guess < secret) {
+        int diff = secret - guess;
+        string hint = GetHint(diff);
+        System.Console.WriteLine($"больше {hint}\n");
+    }
+    else if (guess > secret) {
+        int diff = guess - secret;
+        string hint = GetHint(diff);
+        System.Console.WriteLine($"меньше {hint}\n");
+
+    }
+    else {
+        guessed = true;
+    }
 }
